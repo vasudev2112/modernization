@@ -1,253 +1,277 @@
-"""Unit tests for the DiscountCalculator module.
+"""Unit tests for the Discount Calculator module.
 
-This module contains comprehensive unit tests for the DiscountCalculator class,
-ensuring all discount calculation logic works correctly.
-
-To run tests:
-    pip install pytest
-    pytest test_discount_calculator.py -v
+This test suite provides comprehensive coverage of the DiscountCalculator class,
+including edge cases, boundary conditions, and various customer scenarios.
 """
 
 import pytest
+import sys
+from pathlib import Path
+
+# Add parent directory to path if needed
+sys.path.insert(0, str(Path(__file__).parent))
+
 from discount_calculator import DiscountCalculator
 
 
-class TestDiscountCalculator:
-    """Test suite for DiscountCalculator class."""
+class TestDiscountCalculatorBasic:
+    """Basic functionality tests for DiscountCalculator."""
 
-    # Test Premium Customer Discounts
-    def test_premium_customer_regular_purchase(self):
-        """Test premium customer with regular purchase (< $10,000)."""
+    def test_premium_customer_standard_amount(self):
+        """Test premium customer with standard purchase amount."""
         result = DiscountCalculator.calculate_discount(5000, "PREMIUM")
-        expected = 4000.0  # 20% discount
-        assert result == expected, f"Expected {expected}, got {result}"
+        assert result == 4000.0, "Premium customer should get 20% discount on $5000"
 
-    def test_premium_customer_high_value_purchase(self):
-        """Test premium customer with high-value purchase (> $10,000)."""
-        result = DiscountCalculator.calculate_discount(12000, "PREMIUM")
-        expected = 9000.0  # 20% + 5% = 25% discount
-        assert result == expected, f"Expected {expected}, got {result}"
-
-    def test_premium_customer_exact_threshold(self):
-        """Test premium customer at exact high-value threshold."""
-        result = DiscountCalculator.calculate_discount(10000, "PREMIUM")
-        expected = 8000.0  # Only 20% discount (threshold not exceeded)
-        assert result == expected, f"Expected {expected}, got {result}"
-
-    def test_premium_customer_just_over_threshold(self):
-        """Test premium customer just over high-value threshold."""
-        result = DiscountCalculator.calculate_discount(10001, "PREMIUM")
-        expected = 7500.75  # 20% + 5% = 25% discount
-        assert result == expected, f"Expected {expected}, got {result}"
-
-    # Test Standard Customer Discounts
-    def test_standard_customer_regular_purchase(self):
-        """Test standard customer with regular purchase (< $10,000)."""
+    def test_standard_customer_standard_amount(self):
+        """Test standard customer with standard purchase amount."""
         result = DiscountCalculator.calculate_discount(5000, "STANDARD")
-        expected = 4500.0  # 10% discount
-        assert result == expected, f"Expected {expected}, got {result}"
+        assert result == 4500.0, "Standard customer should get 10% discount on $5000"
 
-    def test_standard_customer_high_value_purchase(self):
-        """Test standard customer with high-value purchase (> $10,000)."""
+    def test_premium_customer_high_value(self):
+        """Test premium customer with high-value purchase."""
+        result = DiscountCalculator.calculate_discount(15000, "PREMIUM")
+        expected = 11250.0  # 25% discount (20% + 5%)
+        assert result == expected, "Premium customer should get 25% discount on $15000"
+
+    def test_standard_customer_high_value(self):
+        """Test standard customer with high-value purchase."""
         result = DiscountCalculator.calculate_discount(15000, "STANDARD")
-        expected = 12750.0  # 10% + 5% = 15% discount
-        assert result == expected, f"Expected {expected}, got {result}"
+        expected = 12750.0  # 15% discount (10% + 5%)
+        assert result == expected, "Standard customer should get 15% discount on $15000"
 
-    def test_standard_customer_exact_threshold(self):
-        """Test standard customer at exact high-value threshold."""
-        result = DiscountCalculator.calculate_discount(10000, "STANDARD")
-        expected = 9000.0  # Only 10% discount
-        assert result == expected, f"Expected {expected}, got {result}"
-
-    # Test Unknown/Other Customer Types
-    def test_unknown_customer_regular_purchase(self):
-        """Test unknown customer type with regular purchase."""
+    def test_unknown_customer_type(self):
+        """Test unknown customer type receives no discount."""
         result = DiscountCalculator.calculate_discount(2000, "UNKNOWN")
-        expected = 2000.0  # No discount
-        assert result == expected, f"Expected {expected}, got {result}"
+        assert result == 2000.0, "Unknown customer type should receive no discount"
 
-    def test_unknown_customer_high_value_purchase(self):
-        """Test unknown customer type with high-value purchase."""
-        result = DiscountCalculator.calculate_discount(15000, "GUEST")
-        expected = 14250.0  # Only 5% high-value discount
-        assert result == expected, f"Expected {expected}, got {result}"
 
-    def test_empty_customer_type(self):
-        """Test with empty customer type string."""
-        result = DiscountCalculator.calculate_discount(5000, "")
-        expected = 5000.0  # No discount
-        assert result == expected, f"Expected {expected}, got {result}"
+class TestDiscountCalculatorCaseSensitivity:
+    """Test case-insensitive customer type handling."""
 
-    # Test Case Sensitivity
-    def test_premium_lowercase(self):
-        """Test premium customer type in lowercase."""
-        result = DiscountCalculator.calculate_discount(5000, "premium")
-        expected = 4000.0  # Should work case-insensitively
-        assert result == expected, f"Expected {expected}, got {result}"
+    @pytest.mark.parametrize("customer_type", [
+        "PREMIUM",
+        "premium",
+        "Premium",
+        "PrEmIuM",
+    ])
+    def test_premium_case_insensitive(self, customer_type):
+        """Test that customer type is case-insensitive for premium."""
+        result = DiscountCalculator.calculate_discount(5000, customer_type)
+        assert result == 4000.0
 
-    def test_standard_mixed_case(self):
-        """Test standard customer type in mixed case."""
-        result = DiscountCalculator.calculate_discount(5000, "StAnDaRd")
-        expected = 4500.0  # Should work case-insensitively
-        assert result == expected, f"Expected {expected}, got {result}"
+    @pytest.mark.parametrize("customer_type", [
+        "STANDARD",
+        "standard",
+        "Standard",
+        "StAnDaRd",
+    ])
+    def test_standard_case_insensitive(self, customer_type):
+        """Test that customer type is case-insensitive for standard."""
+        result = DiscountCalculator.calculate_discount(5000, customer_type)
+        assert result == 4500.0
 
-    def test_premium_with_spaces(self):
-        """Test premium customer type with leading/trailing spaces."""
-        # Note: Current implementation doesn't strip spaces
-        # This test documents current behavior
-        result = DiscountCalculator.calculate_discount(5000, " PREMIUM ")
-        expected = 5000.0  # Spaces cause no match, no discount
-        assert result == expected, f"Expected {expected}, got {result}"
 
-    # Test Edge Cases
+class TestDiscountCalculatorEdgeCases:
+    """Test edge cases and boundary conditions."""
+
     def test_zero_amount(self):
-        """Test with zero purchase amount."""
+        """Test zero purchase amount."""
         result = DiscountCalculator.calculate_discount(0, "PREMIUM")
-        expected = 0.0
-        assert result == expected, f"Expected {expected}, got {result}"
+        assert result == 0.0, "Zero amount should result in zero"
 
-    def test_very_small_amount(self):
-        """Test with very small purchase amount."""
-        result = DiscountCalculator.calculate_discount(0.01, "PREMIUM")
-        expected = 0.008  # 20% discount
-        assert abs(result - expected) < 0.0001, f"Expected {expected}, got {result}"
+    def test_negative_amount(self):
+        """Test negative amount protection."""
+        result = DiscountCalculator.calculate_discount(-100, "PREMIUM")
+        assert result == 0.0, "Negative final amount should be converted to zero"
+
+    def test_exactly_at_threshold(self):
+        """Test amount exactly at high-value threshold."""
+        result = DiscountCalculator.calculate_discount(10000, "STANDARD")
+        expected = 9000.0  # Only 10% discount, not high-value yet
+        assert result == expected, "Amount at threshold should not get high-value discount"
+
+    def test_just_above_threshold(self):
+        """Test amount just above high-value threshold."""
+        result = DiscountCalculator.calculate_discount(10001, "STANDARD")
+        expected = 8500.85  # 15% discount (10% + 5%)
+        assert pytest.approx(result, rel=1e-9) == expected
+
+    def test_just_below_threshold(self):
+        """Test amount just below high-value threshold."""
+        result = DiscountCalculator.calculate_discount(9999, "STANDARD")
+        expected = 8999.1  # Only 10% discount
+        assert pytest.approx(result, rel=1e-9) == expected
 
     def test_very_large_amount(self):
-        """Test with very large purchase amount."""
+        """Test very large purchase amount."""
         result = DiscountCalculator.calculate_discount(1000000, "PREMIUM")
-        expected = 750000.0  # 25% discount (20% + 5%)
-        assert result == expected, f"Expected {expected}, got {result}"
+        expected = 750000.0  # 25% discount
+        assert result == expected
 
-    def test_negative_amount_protection(self):
-        """Test that negative amounts are handled correctly."""
-        # Note: Current implementation doesn't validate input
-        # but ensures output is non-negative
-        result = DiscountCalculator.calculate_discount(-1000, "PREMIUM")
-        expected = 0.0  # Should be protected to 0
-        assert result >= 0, f"Result should be non-negative, got {result}"
+    def test_very_small_amount(self):
+        """Test very small purchase amount."""
+        result = DiscountCalculator.calculate_discount(0.01, "PREMIUM")
+        expected = 0.008  # 20% discount
+        assert pytest.approx(result, rel=1e-9) == expected
 
-    # Test Discount Calculation Accuracy
-    def test_discount_calculation_precision(self):
-        """Test discount calculation with decimal precision."""
-        result = DiscountCalculator.calculate_discount(1234.56, "PREMIUM")
-        expected = 987.648  # 20% discount
-        assert abs(result - expected) < 0.001, f"Expected {expected}, got {result}"
 
-    def test_combined_discount_calculation(self):
-        """Test combined discount calculation (base + high-value)."""
-        result = DiscountCalculator.calculate_discount(20000, "STANDARD")
-        # 10% + 5% = 15% discount
-        # 20000 * 0.15 = 3000
-        # 20000 - 3000 = 17000
-        expected = 17000.0
-        assert result == expected, f"Expected {expected}, got {result}"
+class TestDiscountCalculatorParametrized:
+    """Parametrized tests for comprehensive coverage."""
 
-    # Test Class Constants
-    def test_premium_constant(self):
-        """Test PREMIUM constant is correctly defined."""
-        assert DiscountCalculator.PREMIUM == "PREMIUM"
-
-    def test_standard_constant(self):
-        """Test STANDARD constant is correctly defined."""
-        assert DiscountCalculator.STANDARD == "STANDARD"
-
-    def test_premium_discount_rate(self):
-        """Test PREMIUM_DISCOUNT rate is correctly defined."""
-        assert DiscountCalculator.PREMIUM_DISCOUNT == 0.20
-
-    def test_standard_discount_rate(self):
-        """Test STANDARD_DISCOUNT rate is correctly defined."""
-        assert DiscountCalculator.STANDARD_DISCOUNT == 0.10
-
-    def test_high_value_additional_discount_rate(self):
-        """Test HIGH_VALUE_ADDITIONAL_DISCOUNT rate is correctly defined."""
-        assert DiscountCalculator.HIGH_VALUE_ADDITIONAL_DISCOUNT == 0.05
-
-    def test_high_value_threshold(self):
-        """Test HIGH_VALUE_THRESHOLD is correctly defined."""
-        assert DiscountCalculator.HIGH_VALUE_THRESHOLD == 10000
-
-    # Parametrized Tests
     @pytest.mark.parametrize("amount,customer_type,expected", [
+        # Premium customers - standard amounts
+        (1000, "PREMIUM", 800.0),
         (5000, "PREMIUM", 4000.0),
-        (15000, "STANDARD", 12750.0),
-        (2000, "UNKNOWN", 2000.0),
-        (12000, "PREMIUM", 9000.0),
+        (10000, "PREMIUM", 8000.0),
+        
+        # Premium customers - high-value amounts
+        (10001, "PREMIUM", 7500.75),
+        (15000, "PREMIUM", 11250.0),
+        (20000, "PREMIUM", 15000.0),
+        
+        # Standard customers - standard amounts
+        (1000, "STANDARD", 900.0),
+        (5000, "STANDARD", 4500.0),
+        (10000, "STANDARD", 9000.0),
+        
+        # Standard customers - high-value amounts
         (10001, "STANDARD", 8500.85),
+        (15000, "STANDARD", 12750.0),
+        (20000, "STANDARD", 17000.0),
+        
+        # Unknown customer types
+        (1000, "UNKNOWN", 1000.0),
+        (5000, "GOLD", 5000.0),
+        (10000, "VIP", 10000.0),
+        (15000, "", 15000.0),
+        
+        # Edge cases
         (0, "PREMIUM", 0.0),
-        (100, "STANDARD", 90.0),
+        (0, "STANDARD", 0.0),
+        (0.01, "PREMIUM", 0.008),
     ])
     def test_various_scenarios(self, amount, customer_type, expected):
-        """Test various discount scenarios with parametrized inputs."""
+        """Test various amount and customer type combinations."""
         result = DiscountCalculator.calculate_discount(amount, customer_type)
-        assert abs(result - expected) < 0.01, f"For {amount} and {customer_type}, expected {expected}, got {result}"
+        assert pytest.approx(result, rel=1e-9) == expected
+
+
+class TestDiscountCalculatorConstants:
+    """Test that class constants are properly defined."""
+
+    def test_customer_type_constants_exist(self):
+        """Test that customer type constants are defined."""
+        assert hasattr(DiscountCalculator, 'PREMIUM')
+        assert hasattr(DiscountCalculator, 'STANDARD')
+        assert DiscountCalculator.PREMIUM == "PREMIUM"
+        assert DiscountCalculator.STANDARD == "STANDARD"
+
+    def test_discount_rate_constants_exist(self):
+        """Test that discount rate constants are defined."""
+        assert hasattr(DiscountCalculator, 'PREMIUM_DISCOUNT')
+        assert hasattr(DiscountCalculator, 'STANDARD_DISCOUNT')
+        assert hasattr(DiscountCalculator, 'HIGH_VALUE_DISCOUNT')
+        assert DiscountCalculator.PREMIUM_DISCOUNT == 0.20
+        assert DiscountCalculator.STANDARD_DISCOUNT == 0.10
+        assert DiscountCalculator.HIGH_VALUE_DISCOUNT == 0.05
+
+    def test_threshold_constant_exists(self):
+        """Test that high-value threshold constant is defined."""
+        assert hasattr(DiscountCalculator, 'HIGH_VALUE_THRESHOLD')
+        assert DiscountCalculator.HIGH_VALUE_THRESHOLD == 10000
+
+
+class TestDiscountCalculatorDocumentation:
+    """Test that proper documentation exists."""
+
+    def test_class_has_docstring(self):
+        """Test that the class has a docstring."""
+        assert DiscountCalculator.__doc__ is not None
+        assert len(DiscountCalculator.__doc__.strip()) > 0
+
+    def test_method_has_docstring(self):
+        """Test that calculate_discount method has a docstring."""
+        assert DiscountCalculator.calculate_discount.__doc__ is not None
+        assert len(DiscountCalculator.calculate_discount.__doc__.strip()) > 0
+
+    def test_method_has_type_hints(self):
+        """Test that calculate_discount has type hints."""
+        annotations = DiscountCalculator.calculate_discount.__annotations__
+        assert 'amount' in annotations
+        assert 'customer_type' in annotations
+        assert 'return' in annotations
 
 
 class TestDiscountCalculatorIntegration:
-    """Integration tests for DiscountCalculator."""
-
-    def test_multiple_calculations(self):
-        """Test multiple sequential calculations."""
-        results = [
-            DiscountCalculator.calculate_discount(5000, "PREMIUM"),
-            DiscountCalculator.calculate_discount(15000, "STANDARD"),
-            DiscountCalculator.calculate_discount(2000, "GUEST"),
-        ]
-        expected = [4000.0, 12750.0, 2000.0]
-        assert results == expected, f"Expected {expected}, got {results}"
+    """Integration tests simulating real-world usage."""
 
     def test_batch_processing(self):
-        """Test batch processing of multiple orders."""
-        orders = [
-            (5000, "PREMIUM"),
-            (15000, "STANDARD"),
-            (2000, "GUEST"),
-            (12000, "PREMIUM"),
+        """Test processing multiple discount calculations."""
+        test_cases = [
+            (5000, "PREMIUM", 4000.0),
+            (15000, "STANDARD", 12750.0),
+            (2000, "UNKNOWN", 2000.0),
         ]
         
-        results = []
-        for amount, customer_type in orders:
+        for amount, customer_type, expected in test_cases:
             result = DiscountCalculator.calculate_discount(amount, customer_type)
-            results.append(result)
-        
-        expected = [4000.0, 12750.0, 2000.0, 9000.0]
-        assert results == expected, f"Expected {expected}, got {results}"
+            assert result == expected
 
-    def test_total_savings_calculation(self):
-        """Test calculating total savings across multiple orders."""
-        orders = [
-            (5000, "PREMIUM"),
-            (15000, "STANDARD"),
-            (12000, "PREMIUM"),
-        ]
+    def test_realistic_shopping_cart(self):
+        """Test realistic shopping cart scenario."""
+        # Customer adds items to cart
+        cart_total = 8500.00
+        customer_type = "PREMIUM"
         
-        total_original = sum(amount for amount, _ in orders)
-        total_final = sum(
-            DiscountCalculator.calculate_discount(amount, customer_type)
-            for amount, customer_type in orders
-        )
-        total_savings = total_original - total_final
+        # Calculate final amount
+        final_amount = DiscountCalculator.calculate_discount(cart_total, customer_type)
         
-        expected_savings = 1000 + 2250 + 3000  # Individual savings
-        assert abs(total_savings - expected_savings) < 0.01, \
-            f"Expected savings {expected_savings}, got {total_savings}"
+        # Verify discount applied correctly
+        expected = 6800.0  # 20% discount
+        assert final_amount == expected
+        
+        # Verify discount amount
+        discount_amount = cart_total - final_amount
+        assert discount_amount == 1700.0
+
+    def test_high_value_purchase_scenario(self):
+        """Test high-value purchase with additional discount."""
+        # Large purchase
+        cart_total = 25000.00
+        customer_type = "STANDARD"
+        
+        # Calculate final amount
+        final_amount = DiscountCalculator.calculate_discount(cart_total, customer_type)
+        
+        # Should get 15% total discount (10% + 5%)
+        expected = 21250.0
+        assert final_amount == expected
+        
+        # Verify total savings
+        savings = cart_total - final_amount
+        assert savings == 3750.0
+
+
+class TestDiscountCalculatorPerformance:
+    """Performance-related tests."""
+
+    def test_calculation_speed(self):
+        """Test that calculations are fast enough."""
+        import time
+        
+        start_time = time.time()
+        
+        # Perform 10000 calculations
+        for _ in range(10000):
+            DiscountCalculator.calculate_discount(5000, "PREMIUM")
+        
+        end_time = time.time()
+        elapsed = end_time - start_time
+        
+        # Should complete in less than 1 second
+        assert elapsed < 1.0, f"10000 calculations took {elapsed:.2f} seconds"
 
 
 if __name__ == "__main__":
-    # Run tests with pytest if available, otherwise run basic tests
-    try:
-        import sys
-        pytest.main([__file__, "-v"])
-    except ImportError:
-        print("pytest not installed. Running basic tests...")
-        print("Install pytest with: pip install pytest")
-        print("\nRunning basic validation...")
-        
-        # Basic validation tests
-        test = TestDiscountCalculator()
-        test.test_premium_customer_regular_purchase()
-        test.test_standard_customer_high_value_purchase()
-        test.test_unknown_customer_regular_purchase()
-        
-        print("✅ Basic validation tests passed!")
-        print("For comprehensive testing, install pytest and run: pytest test_discount_calculator.py -v")
+    # Run tests with verbose output
+    pytest.main([__file__, "-v", "--tb=short"])
