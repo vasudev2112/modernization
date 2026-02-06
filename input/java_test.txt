@@ -1,0 +1,42 @@
+public class DiscountCalculator {
+
+    /**
+     * Calculates the final amount after applying discounts
+     *
+     * @param amount        original purchase amount
+     * @param customerType  type of customer (PREMIUM or STANDARD)
+     * @return final amount after discount
+     */
+    public static double calculateDiscount(double amount, String customerType) {
+
+        double discount = 0.0;
+
+        // Customer-based discount
+        if ("PREMIUM".equalsIgnoreCase(customerType)) {
+            discount = 0.20;
+        } else if ("STANDARD".equalsIgnoreCase(customerType)) {
+            discount = 0.10;
+        }
+
+        // High-value purchase additional discount
+        if (amount > 10000) {
+            discount += 0.05;
+        }
+
+        double finalAmount = amount - (amount * discount);
+
+        // Final amount should never be negative
+        if (finalAmount < 0) {
+            finalAmount = 0;
+        }
+
+        return finalAmount;
+    }
+
+    // Sample execution
+    public static void main(String[] args) {
+        System.out.println(calculateDiscount(5000, "PREMIUM"));    // 4000
+        System.out.println(calculateDiscount(15000, "STANDARD"));  // 12750
+        System.out.println(calculateDiscount(2000, "UNKNOWN"));    // 2000
+    }
+}
