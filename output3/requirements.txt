@@ -1,15 +1,14 @@
-# Python Requirements for Discount Calculator
-# No external dependencies required - uses Python standard library only
+# Python Requirements for DiscountCalculator
+# No external dependencies required - uses only Python standard library
 
-# Minimum Python version: 3.6
-# Recommended Python version: 3.8+
+# Development and Testing Dependencies (Optional)
+pytest>=7.0.0          # Testing framework
+pytest-cov>=4.0.0      # Code coverage
+pylint>=2.15.0         # Code linting
+flake8>=5.0.0          # Style checking
+mypy>=0.990            # Static type checking
+black>=22.0.0          # Code formatting
 
-# Optional development dependencies for testing and code quality:
-# Uncomment the lines below if you want to use these tools
-
-# pytest>=7.0.0              # For unit testing
-# pytest-cov>=4.0.0          # For test coverage reports
-# mypy>=1.0.0                # For static type checking
-# black>=23.0.0              # For code formatting
-# flake8>=6.0.0              # For style checking
-# pylint>=2.17.0             # For code analysis
+# Documentation (Optional)
+sphinx>=5.0.0          # Documentation generation
+sphinx-rtd-theme>=1.0.0  # ReadTheDocs theme
