@@ -6,22 +6,15 @@ and purchase amount.
 
 
 class DiscountCalculator:
-    """A class to handle discount calculations for different customer types."""
+    """A class to calculate discounts for different customer types and purchase amounts."""
 
     # Customer type constants
     PREMIUM = "PREMIUM"
     STANDARD = "STANDARD"
 
-    # Discount rates
-    PREMIUM_DISCOUNT = 0.20
-    STANDARD_DISCOUNT = 0.10
-    HIGH_VALUE_DISCOUNT = 0.05
-    HIGH_VALUE_THRESHOLD = 10000
-
     @staticmethod
     def calculate_discount(amount: float, customer_type: str) -> float:
-        """
-        Calculates the final amount after applying discounts.
+        """Calculates the final amount after applying discounts.
 
         Args:
             amount (float): Original purchase amount
@@ -42,28 +35,29 @@ class DiscountCalculator:
 
         # Customer-based discount
         if customer_type.upper() == DiscountCalculator.PREMIUM:
-            discount = DiscountCalculator.PREMIUM_DISCOUNT
+            discount = 0.20
         elif customer_type.upper() == DiscountCalculator.STANDARD:
-            discount = DiscountCalculator.STANDARD_DISCOUNT
+            discount = 0.10
 
         # High-value purchase additional discount
-        if amount > DiscountCalculator.HIGH_VALUE_THRESHOLD:
-            discount += DiscountCalculator.HIGH_VALUE_DISCOUNT
+        if amount > 10000:
+            discount += 0.05
 
         final_amount = amount - (amount * discount)
 
         # Final amount should never be negative
         if final_amount < 0:
-            final_amount = 0.0
+            final_amount = 0
 
         return final_amount
 
 
 def main():
-    """Sample execution demonstrating the discount calculator functionality."""
-    print(f"Premium customer with $5000 purchase: ${DiscountCalculator.calculate_discount(5000, 'PREMIUM')}")
-    print(f"Standard customer with $15000 purchase: ${DiscountCalculator.calculate_discount(15000, 'STANDARD')}")
-    print(f"Unknown customer with $2000 purchase: ${DiscountCalculator.calculate_discount(2000, 'UNKNOWN')}")
+    """Sample execution demonstrating the DiscountCalculator functionality."""
+    # Test cases
+    print(DiscountCalculator.calculate_discount(5000, "PREMIUM"))    # Expected: 4000.0
+    print(DiscountCalculator.calculate_discount(15000, "STANDARD"))  # Expected: 12750.0
+    print(DiscountCalculator.calculate_discount(2000, "UNKNOWN"))    # Expected: 2000.0
 
 
 if __name__ == "__main__":
