@@ -1,0 +1,50 @@
+Code Documentation
+
+1. File Overview
+
+- File Name: discount_calculator.py
+- Language: Python 3.9+
+- Location: input/discount_calculator.py
+
+2. Imports
+
+- None present in this file.
+
+3. Classes
+
+Class: DiscountCalculator
+
+Methods
+
+Method Name: calculate_discount
+  - Parameters:
+    - amount (float): original purchase amount
+    - customer_type (str): type of customer ("PREMIUM" or "STANDARD")
+  - Return Type: float
+  - Description: Calculates the final amount after applying discounts based on customer type and purchase value. Ensures the final amount is not negative.
+
+Method Name: __main__ execution block
+  - Parameters: None
+  - Return Type: None
+  - Description: Entry point for sample execution. Prints results of discount calculations for different scenarios.
+
+4. Exception Handling
+
+- No explicit exception handling present in the file.
+
+5. Execution Flow
+
+- The main execution block runs three sample discount calculations with different input values and prints the results.
+
+6. Observations
+
+- All logic is contained within a single class.
+- Discount rates are determined by customer type and purchase amount.
+- Final amount is prevented from becoming negative.
+- No external libraries or imports are used.
+- No explicit description provided in source code beyond method documentation.
+
+7. Static Analysis Limitations
+
+- Behavior not determinable from static code analysis beyond what is visible in the code.
+- No business purpose or architectural assumptions are made.
