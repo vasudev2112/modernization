@@ -1,27 +1,27 @@
 class DiscountCalculator:
     @staticmethod
-    def calculate_discount(amount: float, customer_type: str) -> float:
+    def calculateDiscount(amount: float, customerType: str) -> float:
         discount = 0.0
 
         # Customer-based discount
-        if customer_type.lower() == "premium":
+        if customerType.lower() == "premium":
             discount = 0.20
-        elif customer_type.lower() == "standard":
+        elif customerType.lower() == "standard":
             discount = 0.10
 
         # High-value purchase additional discount
         if amount > 10000:
             discount += 0.05
 
-        final_amount = amount - (amount * discount)
+        finalAmount = amount - (amount * discount)
 
         # Final amount should never be negative
-        if final_amount < 0:
-            final_amount = 0
+        if finalAmount < 0:
+            finalAmount = 0
 
-        return final_amount
+        return finalAmount
 
 if __name__ == "__main__":
-    print(DiscountCalculator.calculate_discount(5000, "PREMIUM"))    # 4000
-    print(DiscountCalculator.calculate_discount(15000, "STANDARD"))  # 12750
-    print(DiscountCalculator.calculate_discount(2000, "UNKNOWN"))    # 2000
+    print(DiscountCalculator.calculateDiscount(5000, "PREMIUM"))    # 4000
+    print(DiscountCalculator.calculateDiscount(15000, "STANDARD"))  # 12750
+    print(DiscountCalculator.calculateDiscount(2000, "UNKNOWN"))    # 2000
