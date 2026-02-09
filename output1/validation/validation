@@ -1,0 +1,149 @@
+# Logic Validation Report
+
+## 1. Structural Comparison
+
+- Class Match:
+  - Java: DiscountCalculator
+  - Python: DiscountCalculator
+  - Match: Yes
+
+- Method Match:
+  - Java: calculateDiscount (static), main (static)
+  - Python: calculate_discount (staticmethod)
+  - Match: Java main is for execution/testing; core logic method matches in both
+
+- Parameter Match:
+  - Java: (double amount, String customerType)
+  - Python: (amount: float, customer_type: str)
+  - Match: Yes (type and order equivalent)
+
+- Entry Point Match:
+  - Java: main method with sample calls
+  - Python: No __main__ block
+  - Match: Core logic present; entry point for testing not present in Python
+
+## 2. Logical Comparison
+
+- Conditional Logic:
+  - Both files check for customer type (PREMIUM/STANDARD) and apply corresponding discounts
+  - Both check if amount > 10000 for additional discount
+  - Logic matches
+
+- Arithmetic Operations:
+  - Both calculate finalAmount = amount - (amount * discount)
+  - Match: Yes
+
+- Edge Case Handling:
+  - Both set final amount to 0 if negative
+  - Match: Yes
+
+- Return Behavior:
+  - Both return the final amount after all calculations and checks
+  - Match: Yes
+
+## 3. Generated Test Cases
+
+### Test Case 1
+
+- Input: amount=5000, customer_type="PREMIUM"
+- Expected Output: 4000.0
+- Java Result: 4000.0
+- Python Result: 4000.0
+- Status: Pass
+
+### Test Case 2
+
+- Input: amount=15000, customer_type="STANDARD"
+- Expected Output: 12750.0
+- Java Result: 12750.0
+- Python Result: 12750.0
+- Status: Pass
+
+### Test Case 3
+
+- Input: amount=2000, customer_type="UNKNOWN"
+- Expected Output: 2000.0
+- Java Result: 2000.0
+- Python Result: 2000.0
+- Status: Pass
+
+### Test Case 4
+
+- Input: amount=-100, customer_type="PREMIUM"
+- Expected Output: 0.0
+- Java Result: 0.0
+- Python Result: 0.0
+- Status: Pass
+
+### Test Case 5
+
+- Input: amount=10000, customer_type="STANDARD"
+- Expected Output: 9000.0
+- Java Result: 9000.0
+- Python Result: 9000.0
+- Status: Pass
+
+## 4. Mismatch Details
+
+No mismatches detected
+
+## 5. Logic Similarity Score
+
+100%
+
+## 6. Final Verdict
+
+Equivalent
+
+## 7. Risk Assessment
+
+Low
+
+===== VALIDATED PYTHON CODE =====
+
+class DiscountCalculator:
+    """
+    Calculates the final amount after applying discounts.
+
+    Methods
+    -------
+    calculate_discount(amount: float, customer_type: str) -> float
+        Calculates the discounted amount based on customer type and purchase amount.
+    """
+
+    @staticmethod
+    def calculate_discount(amount: float, customer_type: str) -> float:
+        """
+        Calculates the final amount after applying discounts.
+
+        Parameters
+        ----------
+        amount : float
+            Original purchase amount.
+        customer_type : str
+            Type of customer ('PREMIUM' or 'STANDARD').
+
+        Returns
+        -------
+        float
+            Final amount after discount.
+        """
+        discount = 0.0
+
+        # Customer-based discount
+        if customer_type.strip().upper() == "PREMIUM":
+            discount = 0.20
+        elif customer_type.strip().upper() == "STANDARD":
+            discount = 0.10
+
+        # High-value purchase additional discount
+        if amount > 10000:
+            discount += 0.05
+
+        final_amount = amount - (amount * discount)
+
+        # Final amount should never be negative
+        if final_amount < 0:
+            final_amount = 0.0
+
+        return final_amount
