@@ -1,0 +1,52 @@
+Code Documentation
+
+1. File Overview
+
+- File Name: discount_calculator.py
+- Language: Python 3.9+
+- Location: Not specified (derived from input context)
+
+2. Imports
+
+- None
+
+3. Classes
+
+Class: DiscountCalculator
+
+Methods
+
+Method Name: calculate_discount
+
+  - Parameters:
+    - amount (float): original purchase amount
+    - customer_type (str): type of customer (PREMIUM or STANDARD)
+  - Return Type: float (final amount after discount)
+  - Description: Calculates the final amount after applying discounts based on customer type and purchase amount. Applies a 20% discount for PREMIUM customers, 10% for STANDARD customers, and adds an additional 5% discount if the amount exceeds 10,000. Ensures the final amount is not negative.
+
+Method Name: __main__ execution
+
+  - Parameters: None (uses sample values directly)
+  - Return Type: None (prints output)
+  - Description: Entry point for sample execution. Prints the result of `calculate_discount` with sample inputs to the console.
+
+4. Exception Handling
+
+- No explicit exception handling present in the code.
+
+5. Execution Flow
+
+- The script checks for the main entry point.
+- Invokes `calculate_discount` three times with sample data and prints the results to the console.
+
+6. Observations
+
+- The logic for discounts is based solely on customer type and purchase amount.
+- Sample outputs are printed for demonstration.
+- No explicit description provided in source code comments, except for the JavaDoc in the original.
+
+7. Static Analysis Limitations
+
+- Behavior not determinable from static code analysis beyond the visible code structure and comments.
+- No business purpose or architectural details inferred.
+- No runtime assumptions or deployment information included.
