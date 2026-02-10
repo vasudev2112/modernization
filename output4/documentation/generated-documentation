@@ -2,9 +2,9 @@
 
 ## 1. File Overview
 
-- File Name: DiscountCalculator.py
-- Language: Python
-- Location: Not specified (derived from source code)
+- File Name: Not specified in source
+- Language: Python 3.9+
+- Location: Not specified in source
 
 ## 2. Imports
 
@@ -20,29 +20,34 @@
 
   - Parameters:
     - amount (float): original purchase amount
-    - customer_type (str): type of customer ("PREMIUM" or "STANDARD")
+    - customer_type (str): type of customer (PREMIUM or STANDARD)
   - Return Type: float (final amount after discount)
-  - Description: Calculates the final amount after applying a discount based on customer type and purchase amount. The discount is increased for "PREMIUM" and "STANDARD" customers, and an additional discount is applied for amounts greater than 10,000. The final amount is never negative.
+  - Description: Calculates the final amount after applying discounts based on customer type and purchase amount.
 
-#### Static Methods
-
-- calculate_discount is implemented as a static method, mirroring Java's static method behavior.
+- No other methods are present.
 
 ## 4. Exception Handling
 
-- No explicit exception handling present in the code.
+- No explicit exception handling is present in this file.
 
 ## 5. Execution Flow
 
-- The main entry point executes three sample calls to calculate_discount with different parameters and prints the resulting amounts.
+- The `if __name__ == "__main__":` block serves as the entry point.
+- It calls `DiscountCalculator.calculate_discount` with various arguments and prints the returned values.
 
 ## 6. Observations
 
-- The class is self-contained and does not depend on any external libraries or custom imports.
-- All logic is implemented in a static method.
-- The method strictly follows the original Java logic for discount calculation and edge-case handling.
+- Discounts are determined by customer type:
+  - "PREMIUM": 20%
+  - "STANDARD": 10%
+  - Other types: 0%
+- An additional 5% discount is applied if the amount exceeds 10,000.
+- The final amount is ensured to not be negative.
 
 ## 7. Static Analysis Limitations
 
 - No explicit description provided in source code.
-- Behavior not determinable from static code analysis beyond the visible code structure and documented comments.
+- Behavior not determinable from static code analysis: The actual customer types and business rules may depend on external definitions not visible in this file.
+- No information about integration with other systems, input validation beyond the code, or side effects outside the shown methods.
+
+----------
