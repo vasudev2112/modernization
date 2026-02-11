@@ -1,16 +1,18 @@
-# Code Documentation
+Code Documentation
 
-## 1. File Overview
+1. File Overview
 
-- File Name: Not specified in source code.
+- File Name: discount_calculator.py
+
 - Language: Python
-- Location: Not specified in source code.
 
-## 2. Imports
+- Location: output/
 
-- No import statements present in this file.
+2. Imports
 
-## 3. Classes
+- None
+
+3. Classes
 
 Class: DiscountCalculator
 
@@ -21,34 +23,33 @@ Method Name: calculate_discount
   - Parameters:
     - amount (float): original purchase amount
     - customer_type (str): type of customer (PREMIUM or STANDARD)
-  - Return Type: float (final amount after discount)
-  - Description: Calculates the final amount after applying discounts based on customer type and purchase amount. The method applies a base discount depending on the customer type ("PREMIUM" or "STANDARD") and adds an additional discount if the amount exceeds 10,000. Ensures the final amount is not negative.
+  - Return Type: float
+  - Description:
+    Calculates the final amount after applying discounts based on customer type and purchase amount. Applies a 20% discount for PREMIUM customers, 10% for STANDARD customers, and an additional 5% discount for purchases over 10,000. Ensures the final amount is not negative.
 
-Method Name: N/A (main block)
+Method Name: (main block)
 
-  - Parameters: None (demonstrates usage via direct calls)
+  - Parameters:
+    - None (uses hard-coded sample values)
   - Return Type: None
-  - Description: Entry point of the program. Demonstrates usage of the calculate_discount method with sample values and prints the results to standard output.
+  - Description:
+    Entry point for sample execution. Prints the results of calculate_discount for various example inputs.
 
-## 4. Exception Handling
+4. Exception Handling
 
-- No explicit exception handling (try-except blocks) present in the code.
+- No explicit exception handling is present in the code.
 
-## 5. Execution Flow
+5. Execution Flow
 
-- The script, when executed as the main module, makes three sample calls to DiscountCalculator.calculate_discount with different parameters and prints the results.
-- The calculate_discount method computes a discount based on customer type and purchase amount, ensures the result is not negative, and returns the final amount.
+- The main block invokes calculate_discount three times with different parameters and prints the results.
 
-## 6. Observations
+6. Observations
 
-- The code uses string comparison for customer type in a case-insensitive manner.
-- No checks for None input values or invalid customer types other than defaulting to zero discount.
-- No package declaration or imports are present.
-- No explicit description provided in source code except for the method docstring and in-line comments.
+- The class provides a static method to compute discounts based on customer type and purchase amount.
+- Sample execution demonstrates the calculation for different scenarios.
+- No external dependencies or imports are present.
 
-## 7. Static Analysis Limitations
+7. Static Analysis Limitations
 
-- Behavior not determinable from static code analysis: The business context, possible input sources, or integration with external systems are not evident from the code alone.
-- No information about how this class is used outside the provided main block.
-- No validation for None or malformed input parameters.
-- No runtime simulation or external dependencies detected.
+- Behavior related to runtime errors, input validation, or integration with other systems cannot be determined from this static code analysis.
+- No explicit description provided in source code.
