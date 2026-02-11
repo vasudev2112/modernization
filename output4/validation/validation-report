@@ -5,108 +5,96 @@
 - Class Match:
   - Java: DiscountCalculator
   - Python: DiscountCalculator
-  - Match: Yes
+  - Verdict: Match
 
 - Method Match:
   - Java: calculateDiscount (static), main (static)
-  - Python: calculate_discount (static), __main__ entry point
-  - Match: Yes
+  - Python: calculate_discount (static), __main__ execution block
+  - Verdict: Match (method names differ, but structure and usage equivalent)
 
 - Parameter Match:
-  - Java: calculateDiscount(double amount, String customerType)
+  - Java: calculateDiscount(amount: double, customerType: String)
   - Python: calculate_discount(amount: float, customer_type: str)
-  - Match: Yes (names differ, types equivalent)
+  - Verdict: Match
 
 - Entry Point Match:
-  - Java: main(String[] args)
+  - Java: public static void main(String[] args)
   - Python: if __name__ == "__main__"
-  - Match: Yes
+  - Verdict: Match
 
 ## 2. Logical Comparison
 
 - Conditional Logic:
-  - Customer type checked (PREMIUM/Standard, case-insensitive) in both
-  - High-value purchase (>10000) additional discount in both
-  - Match: Yes
+  - Java: Customer type checked via equalsIgnoreCase("PREMIUM"/"STANDARD")
+  - Python: Customer type checked via lower() == "premium"/"standard"
+  - Verdict: Equivalent
 
 - Arithmetic Operations:
-  - Discount calculation and subtraction identical
-  - Match: Yes
+  - Java: discount calculation and application identical
+  - Python: discount calculation and application identical
+  - Verdict: Equivalent
 
 - Edge Case Handling:
-  - Negative final amount reset to zero in both
-  - Match: Yes
+  - Java: Final amount set to 0 if negative
+  - Python: Final amount set to 0 if negative
+  - Verdict: Equivalent
 
 - Return Behavior:
-  - Returns final amount after discount in both
-  - Match: Yes
+  - Java: Returns finalAmount (double)
+  - Python: Returns final_amount (float)
+  - Verdict: Equivalent
 
 ## 3. Generated Test Cases
 
 ### Test Case 1
+
 - Input:
   - amount = 5000
   - customer_type = "PREMIUM"
-- Expected Output:
-  - 4000.0
-- Java Result:
-  - 4000.0
-- Python Result:
-  - 4000.0
-- Status:
-  - Pass
+- Expected Output: 4000.0
+- Java Result: 4000.0
+- Python Result: 4000.0
+- Status: Pass
 
 ### Test Case 2
+
 - Input:
   - amount = 15000
   - customer_type = "STANDARD"
-- Expected Output:
-  - 12750.0
-- Java Result:
-  - 12750.0
-- Python Result:
-  - 12750.0
-- Status:
-  - Pass
+- Expected Output: 12750.0
+- Java Result: 12750.0
+- Python Result: 12750.0
+- Status: Pass
 
 ### Test Case 3
+
 - Input:
   - amount = 2000
   - customer_type = "UNKNOWN"
-- Expected Output:
-  - 2000.0
-- Java Result:
-  - 2000.0
-- Python Result:
-  - 2000.0
-- Status:
-  - Pass
+- Expected Output: 2000.0
+- Java Result: 2000.0
+- Python Result: 2000.0
+- Status: Pass
 
-### Test Case 4 (Boundary)
+### Test Case 4 (Boundary: Negative Result Protection)
+
 - Input:
-  - amount = 10000
+  - amount = -1000
   - customer_type = "PREMIUM"
-- Expected Output:
-  - 8000.0
-- Java Result:
-  - 8000.0
-- Python Result:
-  - 8000.0
-- Status:
-  - Pass
+- Expected Output: 0.0
+- Java Result: 0.0
+- Python Result: 0.0
+- Status: Pass
 
-### Test Case 5 (Edge Case: Negative Amount)
+### Test Case 5 (Edge: High-value, Unknown Customer)
+
 - Input:
-  - amount = -500
-  - customer_type = "STANDARD"
-- Expected Output:
-  - 0.0
-- Java Result:
-  - 0.0
-- Python Result:
-  - 0.0
-- Status:
-  - Pass
+  - amount = 20000
+  - customer_type = "UNKNOWN"
+- Expected Output: 19000.0
+- Java Result: 19000.0
+- Python Result: 19000.0
+- Status: Pass
 
 ## 4. Mismatch Details
 
