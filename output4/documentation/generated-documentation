@@ -1,0 +1,54 @@
+Code Documentation
+
+1. File Overview
+
+- File Name: discount_calculator.py
+- Language: Python 3.9+
+- Location: input/discount_calculator.py
+
+2. Imports
+
+- No explicit import statements present in this file.
+
+3. Classes
+
+Class: DiscountCalculator
+
+Methods
+
+Method Name: calculate_discount
+
+  - Parameters:
+    - amount (float): original purchase amount
+    - customer_type (str): type of customer ("PREMIUM" or "STANDARD")
+  - Return Type: float (final amount after discount)
+  - Description: Calculates the final amount after applying discounts based on customer type and purchase amount. PREMIUM customers receive a 20% discount, STANDARD customers receive a 10% discount. An additional 5% discount is applied if the purchase amount exceeds 10,000. The final amount is never negative.
+
+Method Name: __main__ execution block
+
+  - Parameters: None (uses hardcoded sample values)
+  - Return Type: None (prints results to standard output)
+  - Description: Entry point of the program. Demonstrates usage of the calculate_discount method with sample values and prints the results.
+
+4. Exception Handling
+
+- No explicit exception handling (try-except blocks) present in the code.
+
+5. Execution Flow
+
+- The main execution block calls DiscountCalculator.calculate_discount with three sample arguments and prints the resulting discounted amounts.
+
+6. Observations
+
+- The file contains a single class, DiscountCalculator, with one static method.
+- Method calculate_discount uses conditional logic to determine discount rates.
+- No comments or docstrings are present in the Python code.
+- The code does not import or rely on external libraries.
+- The main execution block provides sample output for validation.
+
+7. Static Analysis Limitations
+
+- Behavior not determinable from static code analysis: The actual runtime output, possible integration points, and business context are not inferable from the code alone.
+- No information available about the broader application or usage outside this file.
+- Only visible code elements are documented; no assumptions are made about hidden dependencies or architectural intent.
+- No explicit description provided in source code.
