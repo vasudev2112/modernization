@@ -3,50 +3,38 @@
 ## 1. Structural Comparison
 
 - Class Match:
-  - Java: DiscountCalculator
-  - Python: DiscountCalculator
-  - Result: Match
-
+  - Both Java and Python have a single class named DiscountCalculator.
 - Method Match:
-  - Java: calculateDiscount (static), main (static)
-  - Python: calculate_discount (staticmethod), __main__ block
-  - Result: Match (naming adjusted for Python conventions)
-
+  - Java: static double calculateDiscount(double, String)
+  - Python: staticmethod calculate_discount(float, str)
+  - Method names use different conventions but are structurally equivalent.
 - Parameter Match:
-  - Java: calculateDiscount(double amount, String customerType)
-  - Python: calculate_discount(amount: float, customer_type: str)
-  - Result: Match (parameter names and types equivalent)
-
+  - Both methods accept two parameters: amount (double/float), customerType/customer_type (String/str).
 - Entry Point Match:
   - Java: public static void main(String[] args)
-  - Python: if __name__ == "__main__"
-  - Result: Match
+  - Python: if __name__ == "__main__": block
+  - Entry points are equivalent for sample execution.
 
 ## 2. Logical Comparison
 
 - Conditional Logic:
-  - Customer type discount applied using case-insensitive comparison in both (Java: equalsIgnoreCase, Python: .lower()).
-  - Additional 5% discount for amount > 10000 in both.
-  - Result: Equivalent
-
+  - Customer type is compared case-insensitively in both implementations (Java uses equalsIgnoreCase, Python uses lower()).
+  - "PREMIUM" yields 20% discount, "STANDARD" yields 10%, otherwise 0% in both.
+  - If amount > 10000, an additional 5% discount is added in both.
 - Arithmetic Operations:
-  - Discount calculation: amount - (amount * discount) in both.
-  - Result: Equivalent
-
+  - Discount is calculated as amount - (amount * discount) in both.
 - Edge Case Handling:
-  - Final amount is set to 0 if negative in both.
-  - Result: Equivalent
-
+  - If final amount < 0, set to 0 in both implementations.
 - Return Behavior:
-  - Both return the computed final amount.
-  - Result: Equivalent
+  - Both return the final amount as a floating point value.
 
 ## 3. Generated Test Cases
 
 ### Test Case 1
 
 - Input:
-    - amount: 5000, customerType: "PREMIUM"
+    - amount: 5000
+    - customerType: "PREMIUM"
 - Expected Output: 4000.0
 - Java Result: 4000.0
 - Python Result: 4000.0
@@ -55,7 +43,8 @@
 ### Test Case 2
 
 - Input:
-    - amount: 15000, customerType: "STANDARD"
+    - amount: 15000
+    - customerType: "STANDARD"
 - Expected Output: 12750.0
 - Java Result: 12750.0
 - Python Result: 12750.0
@@ -64,7 +53,8 @@
 ### Test Case 3
 
 - Input:
-    - amount: 2000, customerType: "UNKNOWN"
+    - amount: 2000
+    - customerType: "UNKNOWN"
 - Expected Output: 2000.0
 - Java Result: 2000.0
 - Python Result: 2000.0
@@ -73,16 +63,18 @@
 ### Test Case 4 (Boundary)
 
 - Input:
-    - amount: 10000, customerType: "PREMIUM"
+    - amount: 10000
+    - customerType: "PREMIUM"
 - Expected Output: 8000.0
 - Java Result: 8000.0
 - Python Result: 8000.0
 - Status: Pass
 
-### Test Case 5 (Negative Result Prevention)
+### Test Case 5 (Edge Case: Negative Result)
 
 - Input:
-    - amount: -100, customerType: "PREMIUM"
+    - amount: -1000
+    - customerType: "PREMIUM"
 - Expected Output: 0.0
 - Java Result: 0.0
 - Python Result: 0.0
@@ -90,7 +82,7 @@
 
 ## 4. Mismatch Details
 
-No mismatches detected
+No mismatches detected.
 
 ## 5. Logic Similarity Score
 
