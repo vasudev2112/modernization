@@ -1,0 +1,55 @@
+# Code Documentation
+
+## 1. File Overview
+
+- File Name: discount_calculator.py
+
+- Language: Python
+
+- Location: input/discount_calculator.py
+
+## 2. Imports
+
+_None detected in this file._
+
+## 3. Classes
+
+### Class: DiscountCalculator
+
+#### Methods
+
+- Method Name: calculate_discount
+
+  - Parameters:
+    - amount (float): original purchase amount
+    - customer_type (str): type of customer ("PREMIUM" or "STANDARD")
+
+  - Return Type: float
+
+  - Description: Calculates the final amount after applying discounts based on customer type and purchase amount. Returns the discounted amount, ensuring it is not negative.
+
+#### Static Methods
+
+- calculate_discount is defined as a static method, mirroring the Java static method.
+
+## 4. Exception Handling
+
+No explicit exception handling is implemented in this file.
+
+## 5. Execution Flow
+
+- The program defines a DiscountCalculator class with a static method calculate_discount.
+- The calculate_discount method computes a discount based on customer type and purchase amount, then returns the final amount.
+- The main block demonstrates the use of calculate_discount with sample values and prints the results to standard output.
+
+## 6. Observations
+
+- The file does not use any external libraries or imports.
+- Discount rates are hardcoded based on customer type and purchase amount.
+- The logic ensures that the final discounted amount is not negative.
+- The entry point is implemented using if __name__ == "__main__":, mirroring Java's main method.
+
+## 7. Static Analysis Limitations
+
+- Behavior not determinable from static code analysis: The actual runtime input and output, integration with other systems, and usage context cannot be inferred from this file alone.
+- No explicit description provided in source code beyond the method docstring and comments.
