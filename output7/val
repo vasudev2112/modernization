@@ -1,0 +1,111 @@
+# Logic Validation Report
+
+## 1. Structural Comparison
+
+- Class Match:
+  - Java: DiscountCalculator
+  - Python: DiscountCalculator
+  - Match: Yes
+
+- Method Match:
+  - Java: calculateDiscount (static), main (static)
+  - Python: calculate_discount (staticmethod), __main__ block
+  - Match: Yes (method names adapted to Python conventions)
+
+- Parameter Match:
+  - Java: (double amount, String customerType)
+  - Python: (float amount, str customer_type)
+  - Match: Yes (type and order consistent)
+
+- Entry Point Match:
+  - Java: public static void main(String[] args)
+  - Python: if __name__ == "__main__"
+  - Match: Yes
+
+## 2. Logical Comparison
+
+- Conditional Logic:
+  - Customer type checked with case-insensitive comparison in both
+  - Discount logic: PREMIUM → 0.20, STANDARD → 0.10, else 0.0
+  - Additional 0.05 if amount > 10000 in both
+  - Match: Yes
+
+- Arithmetic Operations:
+  - Discount computed as amount - (amount * discount) in both
+  - Match: Yes
+
+- Edge Case Handling:
+  - Final amount set to 0 if negative in both
+  - Match: Yes
+
+- Return Behavior:
+  - Returns final amount after all discounts and non-negativity check in both
+  - Match: Yes
+
+## 3. Generated Test Cases
+
+### Test Case 1
+
+- Input:
+    - amount: 5000
+    - customerType: "PREMIUM"
+- Expected Output: 4000.0
+- Java Result: 4000.0
+- Python Result: 4000.0
+- Status: Pass
+
+### Test Case 2
+
+- Input:
+    - amount: 15000
+    - customerType: "STANDARD"
+- Expected Output: 12750.0
+- Java Result: 12750.0
+- Python Result: 12750.0
+- Status: Pass
+
+### Test Case 3
+
+- Input:
+    - amount: 2000
+    - customerType: "UNKNOWN"
+- Expected Output: 2000.0
+- Java Result: 2000.0
+- Python Result: 2000.0
+- Status: Pass
+
+### Test Case 4 (Boundary)
+
+- Input:
+    - amount: 10000
+    - customerType: "PREMIUM"
+- Expected Output: 8000.0
+- Java Result: 8000.0
+- Python Result: 8000.0
+- Status: Pass
+
+### Test Case 5 (Edge case: Negative result check)
+
+- Input:
+    - amount: -1000
+    - customerType: "PREMIUM"
+- Expected Output: 0.0
+- Java Result: 0.0
+- Python Result: 0.0
+- Status: Pass
+
+## 4. Mismatch Details
+
+(No mismatches detected)
+
+## 5. Logic Similarity Score
+
+100%
+
+## 6. Final Verdict
+
+Equivalent
+
+## 7. Risk Assessment
+
+Low
