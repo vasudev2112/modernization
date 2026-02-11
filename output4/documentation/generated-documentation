@@ -1,54 +1,47 @@
-Code Documentation
+# Code Documentation
 
-1. File Overview
+## 1. File Overview
 
 - File Name: discount_calculator.py
-- Language: Python 3.9+
-- Location: input/discount_calculator.py
+- Language: Python
+- Location: Not specified (converted from Java input)
 
-2. Imports
+## 2. Imports
 
-- No explicit import statements present in this file.
+- No import statements found in this file.
 
-3. Classes
+## 3. Classes
 
-Class: DiscountCalculator
+### Class: DiscountCalculator
 
-Methods
+#### Methods
 
-Method Name: calculate_discount
+- Method Name: calculate_discount
 
   - Parameters:
     - amount (float): original purchase amount
-    - customer_type (str): type of customer ("PREMIUM" or "STANDARD")
+    - customer_type (str): type of customer (PREMIUM or STANDARD)
   - Return Type: float (final amount after discount)
-  - Description: Calculates the final amount after applying discounts based on customer type and purchase amount. PREMIUM customers receive a 20% discount, STANDARD customers receive a 10% discount. An additional 5% discount is applied if the purchase amount exceeds 10,000. The final amount is never negative.
+  - Description: Calculates the final amount after applying discounts based on customer type and purchase amount. Customer type can be "PREMIUM" or "STANDARD". An additional discount is applied for amounts greater than 10,000. Ensures the final amount is not negative.
 
-Method Name: __main__ execution block
+- Entry Point: The Python equivalent of Java's main method is provided using `if __name__ == "__main__":`. It calls `calculate_discount` with sample values and prints the results.
 
-  - Parameters: None (uses hardcoded sample values)
-  - Return Type: None (prints results to standard output)
-  - Description: Entry point of the program. Demonstrates usage of the calculate_discount method with sample values and prints the results.
+## 4. Exception Handling
 
-4. Exception Handling
+- No explicit exception handling (try-except blocks) is present in this file.
 
-- No explicit exception handling (try-except blocks) present in the code.
+## 5. Execution Flow
 
-5. Execution Flow
+- The main block serves as the entry point. It invokes `calculate_discount` with three sets of parameters and prints the resulting discounted amounts to standard output.
 
-- The main execution block calls DiscountCalculator.calculate_discount with three sample arguments and prints the resulting discounted amounts.
+## 6. Observations
 
-6. Observations
+- The class contains only a static method.
+- The sample execution in the main block demonstrates usage with different customer types and purchase amounts.
+- Discount logic is based on customer type and purchase amount thresholds.
+- No external dependencies or libraries are used.
 
-- The file contains a single class, DiscountCalculator, with one static method.
-- Method calculate_discount uses conditional logic to determine discount rates.
-- No comments or docstrings are present in the Python code.
-- The code does not import or rely on external libraries.
-- The main execution block provides sample output for validation.
+## 7. Static Analysis Limitations
 
-7. Static Analysis Limitations
-
-- Behavior not determinable from static code analysis: The actual runtime output, possible integration points, and business context are not inferable from the code alone.
-- No information available about the broader application or usage outside this file.
-- Only visible code elements are documented; no assumptions are made about hidden dependencies or architectural intent.
 - No explicit description provided in source code.
+- Behavior not determinable from static code analysis: The actual runtime input/output, integration with other systems, or business context beyond the code comments and structure cannot be inferred.
