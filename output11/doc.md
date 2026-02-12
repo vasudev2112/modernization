@@ -21,34 +21,35 @@
   - Parameters:
     - double amount: original purchase amount
     - String customerType: type of customer (PREMIUM or STANDARD)
-  - Return Type: double (final amount after discount)
-  - Description: Calculates the final amount after applying customer-based and high-value purchase discounts. Ensures the final amount is not negative.
+  - Return Type: double
+  - Description: Calculates the final amount after applying discounts based on customer type and purchase amount.
 
 - Method Name: main
 
   - Parameters:
-    - String[] args: Command-line arguments
+    - String[] args: command-line arguments
   - Return Type: void
-  - Description: Entry point for sample execution. Prints results of calculateDiscount for example inputs.
+  - Description: Entry point for sample execution; prints results of discount calculations for sample inputs.
 
 ## 4. Exception Handling
 
-- No explicit exception handling constructs (try-catch) are present in this file.
+- No explicit exception handling is present in the code.
 
 ## 5. Execution Flow
 
-- The main method calls calculateDiscount with sample values and prints the results.
-- calculateDiscount determines the discount based on customer type and purchase amount, then calculates and returns the discounted amount.
+- The main method executes three sample discount calculations using the `calculateDiscount` method and prints the results.
 
 ## 6. Observations
 
-- All logic is contained within a single class.
-- The class does not use any external libraries or frameworks.
-- Discount logic is based on hard-coded strings and values.
+- Discount rates are determined by customer type ("PREMIUM" or "STANDARD").
+- An additional discount is applied for amounts greater than 10,000.
+- The final amount is ensured to not be negative.
+- If the customer type is not "PREMIUM" or "STANDARD", no discount is applied.
 
 ## 7. Static Analysis Limitations
 
-- Behavior not determinable from static code analysis beyond visible logic.
-- No information on integration, usage context, or external dependencies.
+- Behavior for unrecognized customer types is determined by the code logic, but business intent is not inferable.
+- No information about external dependencies, frameworks, or business context.
+- No runtime or integration behavior can be determined beyond visible code.
 
 ----------
