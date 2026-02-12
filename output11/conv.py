@@ -1,4 +1,11 @@
 class DiscountCalculator:
+    """
+    Calculates the final amount after applying discounts.
+
+    Methods:
+        calculate_discount(amount, customer_type): Calculates final amount after discount.
+    """
+
     @staticmethod
     def calculate_discount(amount: float, customer_type: str) -> float:
         discount = 0.0
