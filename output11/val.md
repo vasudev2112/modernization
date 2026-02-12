@@ -10,12 +10,12 @@
 - Method Match:
   - Java: calculateDiscount (static), main (static)
   - Python: calculate_discount (staticmethod), __main__ block
-  - Result: Match (method names adapted to Python conventions)
+  - Result: Match (method names follow language conventions)
 
 - Parameter Match:
-  - Java: (double amount, String customerType)
-  - Python: (amount: float, customer_type: str)
-  - Result: Match (naming adapted to Python style)
+  - Java: calculateDiscount(double amount, String customerType)
+  - Python: calculate_discount(amount: float, customer_type: str)
+  - Result: Match
 
 - Entry Point Match:
   - Java: public static void main(String[] args)
@@ -25,29 +25,31 @@
 ## 2. Logical Comparison
 
 - Conditional Logic:
-  - Customer type checked case-insensitively in both; 'PREMIUM' → 0.20, 'STANDARD' → 0.10, else 0.0. Additional 0.05 if amount > 10000. Match.
+  - Java: Uses equalsIgnoreCase for customer type; Python uses lower() comparison. Logic matches.
+  - Result: Match
 
 - Arithmetic Operations:
-  - Discount calculated as amount * discount; subtracted from amount. Match.
+  - Both: discount calculation, addition for high-value, final amount computation identical.
+  - Result: Match
 
 - Edge Case Handling:
-  - If final amount < 0, set to 0. Match.
+  - Both: final amount set to 0 if negative.
+  - Result: Match
 
 - Return Behavior:
-  - Returns final amount. Match.
+  - Both: return final amount.
+  - Result: Match
 
 ## 3. Generated Test Cases
 
-| Test Case | Input (amount, customer_type) | Expected Output | Java Result | Python Result | Status |
-|-----------|-------------------------------|----------------|-------------|--------------|--------|
-| 1         | (5000, 'PREMIUM')             | 4000.0         | 4000.0      | 4000.0       | Pass   |
-| 2         | (15000, 'STANDARD')           | 12750.0        | 12750.0     | 12750.0      | Pass   |
-| 3         | (2000, 'UNKNOWN')             | 2000.0         | 2000.0      | 2000.0       | Pass   |
-| 4         | (12000, 'PREMIUM')            | 9000.0         | 9000.0      | 9000.0       | Pass   |
-| 5         | (15000, 'UNKNOWN')            | 14250.0        | 14250.0     | 14250.0      | Pass   |
-| 6         | (1000, 'STANDARD')            | 900.0          | 900.0       | 900.0        | Pass   |
-| 7         | (0, 'PREMIUM')                | 0.0            | 0.0         | 0.0          | Pass   |
-| 8         | (-500, 'STANDARD')            | 0.0            | 0.0         | 0.0          | Pass   |
+| Test Case | Input                            | Expected Output | Java Result | Python Result | Status |
+|-----------|----------------------------------|----------------|-------------|--------------|--------|
+| 1         | amount=5000, customerType=PREMIUM | 4000.0         | 4000.0      | 4000.0       | Pass   |
+| 2         | amount=15000, customerType=STANDARD| 12750.0        | 12750.0     | 12750.0      | Pass   |
+| 3         | amount=2000, customerType=UNKNOWN | 2000.0         | 2000.0      | 2000.0       | Pass   |
+| 4         | amount=12000, customerType=PREMIUM| 9120.0         | 9120.0      | 9120.0       | Pass   |
+| 5         | amount=0, customerType=STANDARD   | 0.0            | 0.0         | 0.0          | Pass   |
+| 6         | amount=-500, customerType=PREMIUM | 0.0            | 0.0         | 0.0          | Pass   |
 
 ## 4. Mismatch Details
 
@@ -64,5 +66,3 @@ Equivalent
 ## 7. Risk Assessment
 
 Low
-
-===== VALIDATED PYTHON CODE =====
