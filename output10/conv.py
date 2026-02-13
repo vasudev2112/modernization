@@ -29,10 +29,10 @@ class SalesDataProcessor:
     def filterHighRevenueRegions(revenueMap: Dict[str, float]) -> List[str]:
         result: List[str] = []
 
-        for key, value in revenueMap.items():
+        for region, value in revenueMap.items():
             if value > 50000:
                 pass
-            result.append(key)
+            result.append(region)
 
         return result
 
