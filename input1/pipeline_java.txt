@@ -1,0 +1,204 @@
+import java.time.LocalDate;
+
+public class Transaction {
+
+    private String transactionId;
+    private String customerId;
+    private double amount;
+    private String currency;
+    private LocalDate transactionDate;
+    private String region;
+
+    public Transaction(String transactionId, String customerId, double amount,
+                       String currency, LocalDate transactionDate, String region) {
+        this.transactionId = transactionId;
+        this.customerId = customerId;
+        this.amount = amount;
+        this.currency = currency;
+        this.transactionDate = transactionDate;
+        this.region = region;
+    }
+
+    public String getTransactionId() { return transactionId; }
+    public String getCustomerId() { return customerId; }
+    public double getAmount() { return amount; }
+    public String getCurrency() { return currency; }
+    public LocalDate getTransactionDate() { return transactionDate; }
+    public String getRegion() { return region; }
+}
+
+public class RawRecord {
+    public String rawLine;
+
+    public RawRecord(String rawLine) {
+        this.rawLine = rawLine;
+    }
+}
+import java.time.LocalDate;
+
+public class TransactionValidator {
+
+    public boolean isValid(Transaction tx) {
+        if (tx.getTransactionId() == null || tx.getTransactionId().isEmpty())
+            return false;
+
+        if (tx.getCustomerId() == null || tx.getCustomerId().isEmpty())
+            return false;
+
+        if (tx.getAmount() <= 0)
+            return false;
+
+        if (tx.getTransactionDate().isAfter(LocalDate.now()))
+            return false;
+
+        return true;
+    }
+}
+import java.util.HashMap;
+import java.util.Map;
+
+public class TransactionTransformer {
+
+    private static final Map<String, Double> FX_RATES = new HashMap<>();
+
+    static {
+        FX_RATES.put("USD", 1.0);
+        FX_RATES.put("INR", 0.012);
+        FX_RATES.put("EUR", 1.1);
+    }
+
+    public Transaction normalizeCurrency(Transaction tx) {
+
+        double rate = FX_RATES.getOrDefault(tx.getCurrency(), 1.0);
+        double normalizedAmount = tx.getAmount() * rate;
+
+        return new Transaction(
+                tx.getTransactionId(),
+                tx.getCustomerId(),
+                normalizedAmount,
+                "USD",
+                tx.getTransactionDate(),
+                tx.getRegion()
+        );
+    }
+}
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class MetricsAggregator {
+
+    public Map<String, Double> totalAmountByRegion(List<Transaction> transactions) {
+
+        Map<String, Double> totals = new HashMap<>();
+
+        for (Transaction tx : transactions) {
+            totals.put(
+                tx.getRegion(),
+                totals.getOrDefault(tx.getRegion(), 0.0) + tx.getAmount()
+            );
+        }
+        return totals;
+    }
+}
+import java.util.ArrayList;
+import java.util.List;
+
+public class ErrorSink {
+
+    private List<String> badRecords = new ArrayList<>();
+
+    public void recordError(String rawRecord, String reason) {
+        badRecords.add(rawRecord + " | ERROR: " + reason);
+    }
+
+    public List<String> getBadRecords() {
+        return badRecords;
+    }
+}
+import java.util.Map;
+
+public class OutputSink {
+
+    public void writeMetrics(Map<String, Double> metrics) {
+        System.out.println("=== Aggregated Metrics ===");
+        for (Map.Entry<String, Double> entry : metrics.entrySet()) {
+            System.out.println(
+                "Region: " + entry.getKey() +
+                ", Total Amount (USD): " + entry.getValue()
+            );
+        }
+    }
+}
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+public class DataPipeline {
+
+    private TransactionValidator validator = new TransactionValidator();
+    private TransactionTransformer transformer = new TransactionTransformer();
+    private MetricsAggregator aggregator = new MetricsAggregator();
+    private ErrorSink errorSink = new ErrorSink();
+    private OutputSink outputSink = new OutputSink();
+
+    public void run(List<RawRecord> rawRecords) {
+
+        List<Transaction> validTransactions = new ArrayList<>();
+
+        for (RawRecord record : rawRecords) {
+            try {
+                Transaction tx = parse(record.rawLine);
+
+                if (validator.isValid(tx)) {
+                    Transaction normalized = transformer.normalizeCurrency(tx);
+                    validTransactions.add(normalized);
+                } else {
+                    errorSink.recordError(record.rawLine, "Validation failed");
+                }
+
+            } catch (Exception e) {
+                errorSink.recordError(record.rawLine, e.getMessage());
+            }
+        }
+
+        Map<String, Double> metrics =
+                aggregator.totalAmountByRegion(validTransactions);
+
+        outputSink.writeMetrics(metrics);
+    }
+
+    private Transaction parse(String line) {
+
+        String[] parts = line.split(",");
+
+        return new Transaction(
+                parts[0],
+                parts[1],
+                Double.parseDouble(parts[2]),
+                parts[3],
+                LocalDate.parse(parts[4]),
+                parts[5]
+        );
+    }
+}
+import java.util.Arrays;
+import java.util.List;
+
+public class Application {
+
+    public static void main(String[] args) {
+
+        List<RawRecord> input = Arrays.asList(
+            new RawRecord("TXN1,CUST1,1000,USD,2024-01-10,US"),
+            new RawRecord("TXN2,CUST2,5000,INR,2024-01-11,INDIA"),
+            new RawRecord("TXN3,CUST3,-200,EUR,2024-01-12,EU"),
+            new RawRecord("TXN4,CUST4,800,EUR,2030-01-01,EU")
+        );
+
+        DataPipeline pipeline = new DataPipeline();
+        pipeline.run(input);
+    }
+}
+
