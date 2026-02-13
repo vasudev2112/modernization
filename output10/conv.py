@@ -4,7 +4,7 @@ class SalesDataProcessor:
 
     @staticmethod
     def calculateRevenue(records: List[str]) -> Dict[str, float]:
-        revenueByRegion: Dict[str, float] = {}
+        revenueByRegion = {}
 
         for record in records:
             parts = record.split(',')
@@ -27,7 +27,7 @@ class SalesDataProcessor:
 
     @staticmethod
     def filterHighRevenueRegions(revenueMap: Dict[str, float]) -> List[str]:
-        result: List[str] = []
+        result = []
 
         for region, value in revenueMap.items():
             if value > 50000:
