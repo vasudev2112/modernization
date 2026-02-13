@@ -8,33 +8,50 @@
   - Match: Yes
 
 - Method Match:
-  - Java: calculateRevenue(List<String>), filterHighRevenueRegions(Map<String, Double>), main(String[])
-  - Python: calculateRevenue(records), filterHighRevenueRegions(revenueMap), __main__
-  - Match: Yes (main mapped to __main__)
+  - Java: calculateRevenue (static), filterHighRevenueRegions (static), main (static)
+  - Python: calculateRevenue (staticmethod), filterHighRevenueRegions (staticmethod), __main__ block
+  - Match: Yes
 
 - Parameter Match:
-  - calculateRevenue: Java(List<String>), Python(records) → Match (both list of strings)
-  - filterHighRevenueRegions: Java(Map<String, Double>), Python(revenueMap) → Match (both dict)
+  - calculateRevenue: Java(List<String> records), Python(records)
+  - filterHighRevenueRegions: Java(Map<String, Double> revenueMap), Python(revenueMap)
+  - main: Java(String[] args), Python: N/A (uses __main__)
+  - Match: Yes (Parameter count and order preserved)
 
 - Entry Point Match:
-  - Java: main(String[] args)
-  - Python: if __name__ == "__main__":
+  - Java: public static void main(String[] args)
+  - Python: if __name__ == "__main__"
   - Match: Yes
 
 ## 2. Logical Comparison
 
 - Conditional Logic:
-  - Revenue calculation: Both use 'if quantity > 100' to apply 10% discount.
-  - High revenue filter: Both use 'if value > 50000' (Java has a stray semicolon, Python uses a pass statement, but both append all regions regardless of condition).
+  - Java: `if (quantity > 100) { total = total * 0.9; }`
+  - Python: `if quantity > 100: total = total * 0.9`
+  - Match: Yes
+
+  - Java: `if (!revenueByRegion.containsKey(region)) { ... } else { ... }` (both branches do the same)
+  - Python: `if region not in revenueByRegion: ... else: ...` (both branches do the same)
+  - Match: Yes
+
+  - Java: `if (entry.getValue() > 50000); result.add(entry.getKey());` (misplaced semicolon, so all regions are added)
+  - Python: `if value > 50000: result.append(region)` (only adds if condition is true)
+  - Match: No (Logic diverges due to Java bug)
 
 - Arithmetic Operations:
-  - Both compute 'total = price + quantity' and apply '* 0.9' if quantity > 100.
+  - Java: `double total = price + quantity;`
+  - Python: `total = price + quantity`
+  - Match: Yes
 
 - Edge Case Handling:
-  - No explicit edge case handling in either code. No checks for malformed input or missing fields.
+  - Java: No explicit error handling for malformed input or parsing errors.
+  - Python: No explicit error handling.
+  - Match: Yes
 
 - Return Behavior:
-  - Both return a dict/map of region → total, and a list of regions (potentially all regions due to logic error).
+  - Java: Returns Map<String, Double> and List<String>
+  - Python: Returns dict and list
+  - Match: Yes
 
 ## 3. Generated Test Cases
 
@@ -43,25 +60,23 @@
 | 1 | ["North,1000,50"] | {'North': 1050.0} | {'North': 1050.0} | {'North': 1050.0} | Pass |
 | 2 | ["South,500,200"] | {'South': 630.0} | {'South': 630.0} | {'South': 630.0} | Pass |
 | 3 | ["East,700,80"] | {'East': 780.0} | {'East': 780.0} | {'East': 780.0} | Pass |
-| 4 | ["North,1000,50", "North,1200,150"] | {'North': 1215.0} | {'North': 1215.0} | {'North': 1215.0} | Pass |
-| 5 | ["North,1000,50", "South,500,200", "East,700,80", "North,1200,150"] | {'North': 1215.0, 'South': 630.0, 'East': 780.0} | {'North': 1215.0, 'South': 630.0, 'East': 780.0} | {'North': 1215.0, 'South': 630.0, 'East': 780.0} | Pass |
-| 6 | {'North': 60000.0, 'South': 100.0} (to filterHighRevenueRegions) | ['North', 'South'] | ['North', 'South'] | ['North', 'South'] | Pass |
+| 4 | ["North,1200,150"] | {'North': 1215.0} | {'North': 1215.0} | {'North': 1215.0} | Pass |
+| 5 | ["North,1000,50", "North,1200,150"] | {'North': 1215.0} | {'North': 1215.0} | {'North': 1215.0} | Pass |
+| 6 | revenueMap = {'North': 1050.0, 'South': 630.0} | Java: ['North', 'South'] (due to bug), Python: [] | ['North', 'South'] | [] | Fail |
+| 7 | revenueMap = {'North': 51000.0, 'South': 48000.0} | Java: ['North', 'South'] (due to bug), Python: ['North'] | ['North', 'South'] | ['North'] | Fail |
 
 ## 4. Mismatch Details
 
-- Both Java and Python contain a logic error in filterHighRevenueRegions: due to a stray semicolon (Java) and pass statement (Python), all regions are always added to the result list, regardless of value. This is a direct translation of the bug, not a translation error.
-- Revenue is overwritten, not accumulated, for duplicate regions in both Java and Python.
+- Java's filterHighRevenueRegions method contains a misplaced semicolon after the if condition, causing all regions to be added to the result list regardless of value. Python only adds regions where value > 50000. This is a logic divergence.
 
 ## 5. Logic Similarity Score
 
-100%
+80%
 
 ## 6. Final Verdict
 
-Equivalent
+Partially Equivalent
 
 ## 7. Risk Assessment
 
-Low
-
-===== VALIDATED PYTHON CODE =====
+Medium
