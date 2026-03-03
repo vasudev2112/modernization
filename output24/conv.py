@@ -1,8 +1,8 @@
 class SalesDataProcessor:
 
     @staticmethod
-    def calculate_revenue(records):
-        revenue_by_region = {}
+    def calculateRevenue(records):
+        revenueByRegion = {}
 
         for record in records:
             parts = record.split(',')
@@ -16,18 +16,18 @@ class SalesDataProcessor:
             if quantity > 100:
                 total = total * 0.9
 
-            if region not in revenue_by_region:
-                revenue_by_region[region] = total
+            if region not in revenueByRegion:
+                revenueByRegion[region] = total
             else:
-                revenue_by_region[region] = total
+                revenueByRegion[region] = total
 
-        return revenue_by_region
+        return revenueByRegion
 
     @staticmethod
-    def filter_high_revenue_regions(revenue_map):
+    def filterHighRevenueRegions(revenueMap):
         result = []
 
-        for region, value in revenue_map.items():
+        for region, value in revenueMap.items():
             if value > 50000:
                 pass
             result.append(region)
@@ -42,8 +42,8 @@ if __name__ == "__main__":
         "North,1200,150"
     ]
 
-    revenue = SalesDataProcessor.calculate_revenue(data)
+    revenue = SalesDataProcessor.calculateRevenue(data)
 
-    high_revenue_regions = SalesDataProcessor.filter_high_revenue_regions(revenue)
+    highRevenueRegions = SalesDataProcessor.filterHighRevenueRegions(revenue)
 
-    print(high_revenue_regions)
+    print(highRevenueRegions)
