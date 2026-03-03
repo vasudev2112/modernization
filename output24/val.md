@@ -8,55 +8,53 @@
   - Match: Yes
 
 - Method Match:
-  - Java: calculateRevenue, filterHighRevenueRegions, main
-  - Python: calculate_revenue, filter_high_revenue_regions, __main__ block
-  - Match: Yes (naming differences, but logic preserved)
+  - Java: calculateRevenue(List<String>), filterHighRevenueRegions(Map<String, Double>), main(String[])
+  - Python: calculateRevenue(records), filterHighRevenueRegions(revenueMap), __main__
+  - Match: Yes (method names and roles preserved)
 
 - Parameter Match:
-  - Java: calculateRevenue(List<String> records), filterHighRevenueRegions(Map<String, Double> revenueMap)
-  - Python: calculate_revenue(records), filter_high_revenue_regions(revenue_map)
+  - calculateRevenue: Java(List<String> records), Python(records)
+  - filterHighRevenueRegions: Java(Map<String, Double>), Python(revenueMap)
   - Match: Yes
 
 - Entry Point Match:
   - Java: public static void main(String[] args)
-  - Python: if __name__ == "__main__"
+  - Python: if __name__ == "__main__":
   - Match: Yes
 
 ## 2. Logical Comparison
 
 - Conditional Logic:
-  - Java: Discount applied if quantity > 100; filter adds region if value > 50000 (but due to semicolon, all regions are added)
-  - Python: Discount applied if quantity > 100; filter has 'pass' inside if, result.append(region) always executed (matches Java logic)
-  - Match: Yes (including logical error)
+  - Both Java and Python check if quantity > 100 and apply a 10% discount to total if true.
+  - In filterHighRevenueRegions, both have a logic error: due to a misplaced semicolon (Java) or misplaced pass (Python), all regions are added unconditionally.
 
 - Arithmetic Operations:
-  - Java: total = price + quantity; total *= 0.9 if quantity > 100
-  - Python: total = price + quantity; total *= 0.9 if quantity > 100
-  - Match: Yes
+  - Both calculate total as price + quantity (not price * quantity).
+  - Discount is applied identically.
 
 - Edge Case Handling:
-  - Java: No explicit edge-case handling; input parsing assumes valid format
-  - Python: No explicit edge-case handling; input parsing assumes valid format
-  - Match: Yes
+  - No explicit handling for malformed input or exceptions in either code.
+  - Overwrites region value in the map/dictionary for each record.
 
 - Return Behavior:
-  - Java: calculateRevenue returns region:total map; filterHighRevenueRegions returns all regions (due to logical error)
-  - Python: calculate_revenue returns region:total dict; filter_high_revenue_regions returns all regions (due to logical error)
-  - Match: Yes
+  - Both return a map/dictionary from calculateRevenue and a list of regions from filterHighRevenueRegions.
 
 ## 3. Generated Test Cases
 
 | Test Case | Input | Expected Output | Java Result | Python Result | Status |
-|----------|-------|----------------|-------------|---------------|--------|
+|-----------|-------|----------------|-------------|---------------|--------|
 | 1 | ["North,1000,50", "South,500,200", "East,700,80", "North,1200,150"] | ['North', 'South', 'East'] | ['North', 'South', 'East'] | ['North', 'South', 'East'] | Pass |
-| 2 | ["West,100,101"] | ['West'] | ['West'] | ['West'] | Pass |
-| 3 | ["Central,10000,500"] | ['Central'] | ['Central'] | ['Central'] | Pass |
+| 2 | ["West,10000,1000"] | ['West'] | ['West'] | ['West'] | Pass |
+| 3 | ["A,100,1", "B,200,2", "C,300,3"] | ['A', 'B', 'C'] | ['A', 'B', 'C'] | ['A', 'B', 'C'] | Pass |
 | 4 | ["North,0,0"] | ['North'] | ['North'] | ['North'] | Pass |
-| 5 | ["East,60000,1"] | ['East'] | ['East'] | ['East'] | Pass |
+| 5 | ["X,1,101"] | ['X'] | ['X'] | ['X'] | Pass |
 
 ## 4. Mismatch Details
 
-No mismatches detected. Both implementations exhibit the same logical error in filterHighRevenueRegions/filter_high_revenue_regions (all regions added regardless of revenue).
+- Both Java and Python contain a logic error in filterHighRevenueRegions:
+  - Java: The semicolon after 'if (entry.getValue() > 50000);' causes the following line to always execute, adding every region to the result list regardless of revenue.
+  - Python: The 'if value > 50000: pass' line is followed by an unconditional result.append(region), so all regions are always added.
+- The code does not aggregate revenue per region; it overwrites the value for duplicate regions.
 
 ## 5. Logic Similarity Score
 
@@ -68,6 +66,6 @@ Equivalent
 
 ## 7. Risk Assessment
 
-Low
+Medium
 
-===== VALIDATED PYTHON CODE =====
+- Reason: Both Java and Python implementations contain the same logic bug and do not aggregate regional revenue. No exception handling for malformed inputs.
